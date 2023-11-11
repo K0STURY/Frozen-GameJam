@@ -1,0 +1,134 @@
+[gd_scene load_steps=10 format=3 uid="uid://3s4lseaoc57b"]
+
+[ext_resource type="Script" path="res://Assets/Code/Player.gd" id="1_aneb2"]
+[ext_resource type="Texture2D" uid="uid://dwtygq8peu6gs" path="res://Assets/Sprites/Player.png" id="2_8gl3o"]
+[ext_resource type="Script" path="res://Assets/Code/CameraFollow.gd" id="3_vqyue"]
+[ext_resource type="Texture2D" uid="uid://bl3tqihcq7f31" path="res://Assets/Sprites/Torch.png" id="5_i63tk"]
+[ext_resource type="Texture2D" uid="uid://c0bf4tjnorj4t" path="res://Assets/Sprites/Trees.png" id="5_mu8qo"]
+[ext_resource type="Script" path="res://Pickup.gd" id="5_oja68"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w5f6a"]
+radius = 32.0624
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n3q68"]
+size = Vector2(22, 42.3334)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ojngt"]
+size = Vector2(4, 13)
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("progressBar")]
+collision_layer = 129
+collision_mask = 129
+slide_on_ceiling = false
+script = ExtResource("1_aneb2")
+progressBar = NodePath("../Camera2D/ProgressBar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_w5f6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("2_8gl3o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Sprite2D"]
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+script = ExtResource("3_vqyue")
+player = NodePath("../Player")
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera2D"]
+offset_left = -52.0
+offset_top = -91.0
+offset_right = -48.0
+offset_bottom = -64.0
+max_value = 1.0
+value = 1.0
+fill_mode = 1
+
+[node name="Trees" type="Node" parent="."]
+
+[node name="Tree1" type="StaticBody2D" parent="Trees"]
+position = Vector2(254, 86)
+disable_mode = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Trees/Tree1"]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("5_mu8qo")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Tree1"]
+position = Vector2(0, 74.8333)
+shape = SubResource("RectangleShape2D_n3q68")
+
+[node name="Tree2" type="StaticBody2D" parent="Trees"]
+position = Vector2(433, 86)
+disable_mode = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Trees/Tree2"]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("5_mu8qo")
+region_enabled = true
+region_rect = Rect2(64, 0, 64, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Tree2"]
+position = Vector2(0, 74.8333)
+shape = SubResource("RectangleShape2D_n3q68")
+
+[node name="Tree3" type="StaticBody2D" parent="Trees"]
+position = Vector2(254, 281)
+disable_mode = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Trees/Tree3"]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("5_mu8qo")
+region_enabled = true
+region_rect = Rect2(0, 64, 64, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Tree3"]
+position = Vector2(0, 74.8333)
+shape = SubResource("RectangleShape2D_n3q68")
+
+[node name="Tree4" type="StaticBody2D" parent="Trees"]
+position = Vector2(433, 282)
+disable_mode = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Trees/Tree4"]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("5_mu8qo")
+region_enabled = true
+region_rect = Rect2(64, 64, 64, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Tree4"]
+position = Vector2(0, 74.8333)
+shape = SubResource("RectangleShape2D_n3q68")
+
+[node name="Torch" type="Area2D" parent="."]
+position = Vector2(152, 79)
+disable_mode = 2
+collision_layer = 129
+script = ExtResource("5_oja68")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Torch"]
+position = Vector2(0, 4.69838)
+scale = Vector2(3.13225, 3.13225)
+shape = SubResource("RectangleShape2D_ojngt")
+
+[node name="Sprite2D" type="Sprite2D" parent="Torch"]
+texture_filter = 1
+scale = Vector2(3.13225, 3.13225)
+texture = ExtResource("5_i63tk")
+
+[connection signal="body_entered" from="Torch" to="Player" method="OnTorchBodyEntered"]
+[connection signal="body_entered" from="Torch" to="Torch" method="OnTorchBodyEntered"]
